@@ -1,11 +1,10 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import 'dotenv/config';
 
 mongoose
-  .connect(
-    "mongodb+srv://ihor-admin:m8l3j6bUq2u9Dpm1@cluster0.7gsk9lg.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('db ok');
   })
