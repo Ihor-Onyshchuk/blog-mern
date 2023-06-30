@@ -1,0 +1,28 @@
+# Dependency directories
+/node_modules
+# /client/node_modules
+# /server/node_modules
+
+# Built files
+/build
+# /client/build
+
+# Environment variables
+.env
+# /client/.env
+# /server/.env
+
+# Log files
+logs/
+*.log
+
+# Editor and IDE files
+.idea/
+.vscode/
+
+# macOS specific files
+.DS_Store
+
+# Dependency lock files
+# package-lock.json
+# yarn.lock
