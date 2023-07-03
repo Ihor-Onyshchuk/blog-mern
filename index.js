@@ -6,6 +6,7 @@ import { validationResult } from 'express-validator';
 import 'dotenv/config';
 
 import UserModel from './models/User.js';
+import checkAtuh from './utils/checkAtuh.js';
 import { registerValidation } from './validations/auth.js';
 
 mongoose
@@ -104,6 +105,28 @@ app.post('/auth/login', async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json('Authorization failed!');
+  }
+});
+
+app.get('/auth/me', checkAtuh, async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.userId);
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'Access denied',
+      });
+    }
+
+    const { passwordHash, ...userData } = user._doc;
+
+    res.json({ ...userData });
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({
+      message: 'Access denied',
+    });
   }
 });
 
