@@ -3,8 +3,13 @@ import mongoose from 'mongoose';
 import 'dotenv/config';
 
 import checkAtuh from './utils/checkAtuh.js';
-import { registerValidation } from './validations/auth.js';
+import {
+  registerValidation,
+  loginValidation,
+  postCreateValidation,
+} from './validations.js';
 import * as UserController from './controllers/UserController.js';
+import * as PostController from './controllers/PostController.js';
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -19,9 +24,17 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/auth/login', UserController.login);
+// auth
 app.get('/auth/me', checkAtuh, UserController.getMe);
+app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
+
+// posts
+// app.get('/posts', PostController.getAll);
+// app.get('/posts/:id', PostController.getOne);
+app.post('/posts', checkAtuh, postCreateValidation, PostController.create);
+// app.delete('/posts/:id', PostController.remove);
+// app.patch('/posts/:id', PostController.update);
 
 app.listen(8080, (err) => {
   if (err) {
