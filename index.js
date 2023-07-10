@@ -30,11 +30,11 @@ app.post('/auth/login', loginValidation, UserController.login);
 app.post('/auth/register', registerValidation, UserController.register);
 
 // posts
-// app.get('/posts', PostController.getAll);
-// app.get('/posts/:id', PostController.getOne);
+app.get('/posts', PostController.getAll);
+app.get('/posts/:id', PostController.getOne);
 app.post('/posts', checkAtuh, postCreateValidation, PostController.create);
-// app.delete('/posts/:id', PostController.remove);
-// app.patch('/posts/:id', PostController.update);
+app.delete('/posts/:id', checkAtuh, PostController.remove);
+app.patch('/posts/:id', checkAtuh, PostController.update);
 
 app.listen(8080, (err) => {
   if (err) {
