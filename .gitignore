@@ -23,6 +23,9 @@ logs/
 # macOS specific files
 .DS_Store
 
+# uploaded files
+/uploads
+
 # Dependency lock files
 # package-lock.json
 # yarn.lock
