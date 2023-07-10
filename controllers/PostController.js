@@ -1,5 +1,3 @@
-import { populate } from 'dotenv';
-
 import PostModel from '../models/Post.js';
 
 export const getAll = async (req, res) => {

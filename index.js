@@ -3,14 +3,13 @@ import multer from 'multer';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
-import checkAtuh from './utils/checkAtuh.js';
 import {
   registerValidation,
   loginValidation,
   postCreateValidation,
 } from './validations.js';
-import * as UserController from './controllers/UserController.js';
-import * as PostController from './controllers/PostController.js';
+import { UserController, PostController } from './controllers/index.js';
+import { checkAuth, handleValidationsErrors } from './utils/index.js';
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -38,19 +37,41 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 // auth
-app.get('/auth/me', checkAtuh, UserController.getMe);
-app.post('/auth/login', loginValidation, UserController.login);
-app.post('/auth/register', registerValidation, UserController.register);
+app.get('/auth/me', checkAuth, UserController.getMe);
+app.post(
+  '/auth/login',
+  loginValidation,
+  handleValidationsErrors,
+  UserController.login
+);
+app.post(
+  '/auth/register',
+  registerValidation,
+  handleValidationsErrors,
+  UserController.register
+);
 
 // posts
 app.get('/posts', PostController.getAll);
 app.get('/posts/:id', PostController.getOne);
-app.post('/posts', checkAtuh, postCreateValidation, PostController.create);
-app.delete('/posts/:id', checkAtuh, PostController.remove);
-app.patch('/posts/:id', checkAtuh, PostController.update);
+app.post(
+  '/posts',
+  checkAuth,
+  postCreateValidation,
+  handleValidationsErrors,
+  PostController.create
+);
+app.delete('/posts/:id', checkAuth, PostController.remove);
+app.patch(
+  '/posts/:id',
+  checkAuth,
+  postCreateValidation,
+  handleValidationsErrors,
+  PostController.update
+);
 
-// file uploads
-app.post('/upload', checkAtuh, upload.single('image'), (req, res) => {
+// uploads
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
   res.json({
     url: `/uploads/${req.file.originalname}`,
   });
