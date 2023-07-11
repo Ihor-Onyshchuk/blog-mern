@@ -17,6 +17,6 @@ export const postCreateValidation = [
     .isLength({ min: 3 })
     .isString(),
   body('text', 'Add publication text').isLength({ min: 3 }).isString(),
-  body('tags', 'Add arrays of tags').optional().isString(),
+  body('tags', 'Provide some tags').optional().isString(),
   body('imageUrl', 'Invalid image link').optional().isString(),
 ];

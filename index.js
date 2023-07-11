@@ -72,6 +72,9 @@ app.patch(
   PostController.update
 );
 
+// tags
+app.get('/tags', PostController.getLastTags);
+
 // uploads
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
   res.json({
