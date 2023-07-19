@@ -30,7 +30,7 @@ export const getOne = async (req, res) => {
       {
         new: true,
       }
-    );
+    ).populate({ path: 'user', select: '-passwordHash' });
 
     if (!doc) {
       return res.status(404).json({
