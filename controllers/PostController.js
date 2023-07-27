@@ -1,9 +1,17 @@
 import PostModel from '../models/Post.js';
 
+const validSortOrdersRegExp = /\b(asc|desc|ascending|descending|1|-1)\b/g;
+
 export const getAll = async (req, res) => {
+  const { sort, order } = req.query;
+  const isValidSortOrder = Boolean(
+    (order || '').match(validSortOrdersRegExp)?.length
+  );
+
   try {
     const posts = await PostModel.find()
       .populate({ path: 'user', select: '-passwordHash' })
+      .sort([[sort || 'createdAt', isValidSortOrder ? order : 'desc']])
       .exec();
 
     res.json(posts);
